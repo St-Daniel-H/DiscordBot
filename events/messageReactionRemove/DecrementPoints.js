@@ -1,9 +1,11 @@
 const userProfile = require("../../schemas/userProfileSchema");
+const channels = require("../../channels");
+
 module.exports = async (reaction, user, client) => {
   if (
-    reaction.message.channelId !== process.env.USD_CHANNEL &&
-    reaction.message.channelId !== process.env.MACRO_CHANNEL &&
-    reaction.message.channelId !== process.env.FEEDBACK_CHANNEL
+    reaction.message.channelId != channels.USD &&
+    reaction.message.channelId != channels.MacroBoosting &&
+    reaction.message.channelId != channels.Feedback
   )
     return;
   if (user.id === client.user.id) {
@@ -17,11 +19,11 @@ module.exports = async (reaction, user, client) => {
       reaction.message.reply("user not found");
       return;
     }
-    if (reaction.message.channelId == process.env.USD_CHANNEL) {
+    if (reaction.message.channelId == channels.USD) {
       userToUpdate.USD -= 2;
-    } else if (reaction.message.channelId == process.env.FEEDBACK_CHANNEL) {
+    } else if (reaction.message.channelId == channels.Feedback) {
       userToUpdate.Feedback -= 0.5;
-    } else if (reaction.message.channelId == process.env.MACRO_CHANNEL) {
+    } else if (reaction.message.channelId == channels.MacroBoosting) {
       userToUpdate.MacroBoosting -= 4;
     }
     try {

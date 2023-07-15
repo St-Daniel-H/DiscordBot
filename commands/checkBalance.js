@@ -30,7 +30,7 @@ module.exports = {
               ",Feedback:  " +
               user.Feedback +
               ".Total: " +
-              parseInt(user.USD + user.MacroBoosting + user.Feedback)
+              parseFloat(user.USD + user.MacroBoosting + user.Feedback)
           : "<@" +
               targetUserId +
               ">'s balance:  USD: " +
@@ -40,7 +40,7 @@ module.exports = {
               ",Feedback:  " +
               user.Feedback +
               ".Total: " +
-              parseInt(user.USD + user.MacroBoosting + user.Feedback)
+              parseFloat(user.USD + user.MacroBoosting + user.Feedback)
       );
     } catch (err) {
       console.log(err);

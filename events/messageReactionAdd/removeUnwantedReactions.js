@@ -1,10 +1,12 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const userProfile = require("../../schemas/userProfileSchema");
+const roles = require("../../roles");
+const channels = require("../../channels");
 module.exports = async (reaction, user, client) => {
   if (
-    reaction.message.channelId !== process.env.USD_CHANNEL &&
-    reaction.message.channelId !== process.env.MACRO_CHANNEL &&
-    reaction.message.channelId !== process.env.FEEDBACK_CHANNEL
+    reaction.message.channelId != channels.USD &&
+    reaction.message.channelId != channels.MacroBoosting &&
+    reaction.message.channelId != channels.Feedback
   )
     return;
 
@@ -43,11 +45,7 @@ module.exports = async (reaction, user, client) => {
       return; // Ignore the reaction added by the bot
     }
     // Check if the member has the required role
-    if (
-      !member.roles.cache.has(
-        process.env.senior_role || process.env.sheriff_role
-      )
-    ) {
+    if (!member.roles.cache.has(roles.sheriff || roles.senior)) {
       reaction.message.reply("only seniors allowed to react");
       // Remove the reaction
       reaction.users.remove(user.id);
@@ -62,11 +60,11 @@ module.exports = async (reaction, user, client) => {
         reaction.message.reply("user not found");
         return;
       }
-      if (reaction.message.channelId == process.env.USD_CHANNEL) {
+      if (reaction.message.channelId == channels.USD) {
         userToUpdate.USD += 2;
-      } else if (reaction.message.channelId == process.env.FEEDBACK_CHANNEL) {
+      } else if (reaction.message.channelId == channels.Feedback) {
         userToUpdate.Feedback += 0.5;
-      } else if (reaction.message.channelId == process.env.MACRO_CHANNEL) {
+      } else if (reaction.message.channelId == channels.MacroBoosting) {
         userToUpdate.MacroBoosting += 4;
       }
       try {

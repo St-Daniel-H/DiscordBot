@@ -1,5 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const userProfile = require("../schemas/userProfileSchema");
+const roles = require("../roles");
+
 module.exports = {
   run: async ({ interaction }) => {
     if (!interaction.inGuild()) {
@@ -9,22 +11,22 @@ module.exports = {
       });
       return;
     }
-    const targetUserId = interaction.options.getUser("target-user")?.id;
-    if (!targetUserId) {
-      interaction.reply({
-        content: "please ping a user",
-      });
-      return;
-    }
     // Check if the user has the specific role
     const member = interaction.guild.members.cache.get(interaction.user.id);
     const hasRequiredRole = member.roles.cache.has(
-      process.env.senior_role || process.env.sheriff_role
+      roles.sheriff || roles.senior
     );
     if (!hasRequiredRole) {
       interaction.reply({
         content: "You don't have the required role to use this command",
         ephemeral: true,
+      });
+      return;
+    }
+    const targetUserId = interaction.options.getUser("target-user")?.id;
+    if (!targetUserId) {
+      interaction.reply({
+        content: "please ping a user",
       });
       return;
     }
