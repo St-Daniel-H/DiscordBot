@@ -43,7 +43,11 @@ module.exports = async (reaction, user, client) => {
       return; // Ignore the reaction added by the bot
     }
     // Check if the member has the required role
-    if (!member.roles.cache.has("1129713710710140938")) {
+    if (
+      !member.roles.cache.has(
+        process.env.senior_role || process.env.sheriff_role
+      )
+    ) {
       reaction.message.reply("only seniors allowed to react");
       // Remove the reaction
       reaction.users.remove(user.id);

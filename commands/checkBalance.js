@@ -28,7 +28,9 @@ module.exports = {
               ", macro/boosting:" +
               user.MacroBoosting +
               ",Feedback:  " +
-              user.Feedback
+              user.Feedback +
+              ".Total: " +
+              parseInt(user.USD + user.MacroBoosting + user.Feedback)
           : "<@" +
               targetUserId +
               ">'s balance:  USD: " +
@@ -36,7 +38,9 @@ module.exports = {
               ", macro/boosting:" +
               user.MacroBoosting +
               ",Feedback:  " +
-              user.Feedback
+              user.Feedback +
+              ".Total: " +
+              parseInt(user.USD + user.MacroBoosting + user.Feedback)
       );
     } catch (err) {
       console.log(err);

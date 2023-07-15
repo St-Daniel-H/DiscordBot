@@ -30,30 +30,28 @@ module.exports = {
     }
 
     try {
-      let user = await userProfile.findOne({ userId: targetUserId });
-      if (user) {
+      let user = await userProfile.findOneAndDelete({ userId: targetUserId });
+      if (!user) {
         interaction.reply({
-          content: "user already exists",
+          content: "user was not found!",
         });
         return;
+      } else {
+        interaction.reply({
+          content: "user was  deleted!",
+        });
       }
-      let newUser = await userProfile.create({
-        userId: targetUserId,
-      });
-      interaction.reply({
-        content: "user added successfully",
-      });
     } catch (err) {
       console.log(err);
     }
   },
   data: {
-    name: "add-user",
-    description: "add deputy to database",
+    name: "delete-user",
+    description: "delete deputy from database",
     options: [
       {
         name: "target-user",
-        description: "the user you want to add",
+        description: "the user you want to delete",
         type: ApplicationCommandOptionType.User,
       },
     ],

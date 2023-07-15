@@ -31,29 +31,37 @@ module.exports = {
 
     try {
       let user = await userProfile.findOne({ userId: targetUserId });
-      if (user) {
+      if (!user) {
         interaction.reply({
-          content: "user already exists",
+          content: "user was not found!",
         });
         return;
+      } else {
+        interaction.reply({
+          content:
+            "user was  resetted! They previously had: USD: " +
+            user.USD +
+            ", feedback: " +
+            user.Feedback +
+            ", macro/boosting: " +
+            user.MacroBoosting,
+        });
+        user.USD = 0;
+        user.Feedback = 0;
+        user.MacroBoosting = 0;
+        await user.save();
       }
-      let newUser = await userProfile.create({
-        userId: targetUserId,
-      });
-      interaction.reply({
-        content: "user added successfully",
-      });
     } catch (err) {
       console.log(err);
     }
   },
   data: {
-    name: "add-user",
-    description: "add deputy to database",
+    name: "reset-user",
+    description: "reset deputy balance",
     options: [
       {
         name: "target-user",
-        description: "the user you want to add",
+        description: "the user you want to reset",
         type: ApplicationCommandOptionType.User,
       },
     ],
